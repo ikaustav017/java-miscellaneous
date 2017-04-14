@@ -8,21 +8,44 @@ public class String2Int {
 
 	public static int StringtoInt(String s) throws Exception {
 
-		if (s.isEmpty()) {
-			throw new Exception("String cannot be null or empty");
+		if (s == null || s.isEmpty() || "+".equalsIgnoreCase(s) || "-".equalsIgnoreCase(s)) {
+			return 0;
 		}
+		if (s.contains("+") && s.contains("-")) {
+			return 0;
+		}
+		if (s.contains("."))
+			return 0;
+
 		int length = s.length();
 		int result = 0, i = 0;
 		boolean negativeFlag = false;
 
-		if (s.charAt(i) == '-' && i == 0) {
+		while (i < length) {
+			if (s.charAt(i) == ' ') {
+				i++;
+				continue;
+			}
+
+			break;
+		}
+
+		if (s.charAt(i) == '-') {
 			negativeFlag = true;
-			i = 1;
+			i++;
+		}
+
+		if (s.charAt(i) == '+') {
+			negativeFlag = false;
+			i++;
 		}
 
 		while (i < length) {
 
 			int value = s.charAt(i) - '0';
+
+			if (value > 9 || value < 0)
+				break;
 			result = result * 10 + value;
 			i++;
 		}
@@ -36,13 +59,18 @@ public class String2Int {
 	public static void main(String args[]) {
 
 		try {
+
 			System.out.println(String2Int.StringtoInt("450"));
 			System.out.println(String2Int.StringtoInt("-189"));
 			System.out.println(String2Int.StringtoInt("0"));
 			System.out.println(String2Int.StringtoInt("-1"));
 			System.out.println(String2Int.StringtoInt("1"));
 			System.out.println(String2Int.StringtoInt(""));
-			System.out.println(String2Int.StringtoInt(null));
+			System.out.println(String2Int.StringtoInt("+10"));
+
+			System.out.println(String2Int.StringtoInt("     -10"));
+			System.out.println(String2Int.StringtoInt("     -0010as57"));
+			System.out.println(String2Int.StringtoInt("2147483648"));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
